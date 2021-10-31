@@ -26,6 +26,10 @@ class _HomePageState extends State<HomePage>{
         title: Text(widget.title),
       ),
       drawer: const MainDrawer(),
+      body: const Center(
+        child: Text("Welcome !!"),
+      ),
+
     );
 
   }
