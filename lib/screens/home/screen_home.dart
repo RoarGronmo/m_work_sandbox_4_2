@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:m_work_sandbox_4_2/screens/map/screen_map.dart';
 
 import 'home_drawer.dart';
 
@@ -26,11 +28,52 @@ class _HomePageState extends State<HomePage>{
         title: Text(widget.title),
       ),
       drawer: const MainDrawer(),
-      body: const Center(
-        child: Text("Welcome !!"),
-      ),
-
-    );
+      body: OrientationBuilder(
+        builder: (context, orientation){
+          if(orientation == Orientation.portrait){
+            return _portraitMode();
+          } else {
+            return _landscapeMode();
+          }
+        }),
+      );
 
   }
+
+  Widget _portraitMode(){
+    return Column(
+      children: <Widget>[
+        _expandedMap(),
+        _expandedList()
+      ],
+    );
+  }
+
+  Widget _landscapeMode(){
+    return Row(
+      children: <Widget>[
+        _expandedList(),
+        _expandedMap()
+      ],
+    );
+  }
+
+  Widget _expandedList(){
+    return Expanded(
+      child: ListView(
+        children: [
+          Text("1234"),
+          Text("5678")
+        ],
+      )
+    );
+  }
+
+  Widget _expandedMap()
+  {
+    return Expanded(
+      child: MWorkMap()
+    );
+  }
+
 }
