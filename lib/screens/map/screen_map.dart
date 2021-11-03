@@ -18,6 +18,7 @@ class _MWorkMapState extends State<MWorkMap>{
   late LocationData _currentPosition;
   late PermissionStatus _permissionGranted;
   late GoogleMapController _mapController;
+  TileOverlay? _tileOverlay;
   LatLng _initialcameraposition = LatLng(0,0);
   Location location = Location();
 
@@ -130,6 +131,7 @@ class _MWorkMapState extends State<MWorkMap>{
       ),
       markers: _markers.values.toSet(),
       myLocationEnabled: true,
+
     );
 
   }
