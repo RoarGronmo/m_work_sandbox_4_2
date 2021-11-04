@@ -3,13 +3,18 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:m_work_sandbox_4_2/screens/test_data/test_locations.dart' as locations;
 import 'package:location/location.dart';
 
+import 'package:m_work_sandbox_4_2/screens/map/m_work_tile_provider.dart';
+
 
 class MWorkMap extends StatefulWidget{
   const MWorkMap({Key? key}) : super(key: key);
 
-
   @override
   _MWorkMapState createState() => _MWorkMapState();
+
+  addTileOverlay() => createState()._addTileOverlay();
+  removeTileOverlay() => createState()._removeTileOverlay();
+  clearTileCache()=> createState()._clearTileCache();
 }
 
 class _MWorkMapState extends State<MWorkMap>{
@@ -19,8 +24,9 @@ class _MWorkMapState extends State<MWorkMap>{
   late PermissionStatus _permissionGranted;
   late GoogleMapController _mapController;
   TileOverlay? _tileOverlay;
-  LatLng _initialcameraposition = LatLng(0,0);
+  LatLng _initialCameraPosition = LatLng(0,0);
   Location location = Location();
+
 
 
 
@@ -64,7 +70,7 @@ class _MWorkMapState extends State<MWorkMap>{
       return;
     }
 
-    _initialcameraposition = LatLng(_currentPosition.latitude!, _currentPosition.longitude!);
+    _initialCameraPosition = LatLng(_currentPosition.latitude!, _currentPosition.longitude!);
 
     location.onLocationChanged.listen((LocationData currentLocation) {
       print("currentLocation : [${currentLocation.latitude},${currentLocation.longitude}]");
@@ -74,9 +80,9 @@ class _MWorkMapState extends State<MWorkMap>{
         {
           return;
         }
-        _initialcameraposition = LatLng(_currentPosition.latitude!, _currentPosition.longitude!);
+        _initialCameraPosition = LatLng(_currentPosition.latitude!, _currentPosition.longitude!);
 
-        _mapController.moveCamera(CameraUpdate.newLatLngZoom(LatLng(_initialcameraposition.latitude, _initialcameraposition.longitude),15.0));
+        _mapController.animateCamera(CameraUpdate.newLatLngZoom(LatLng(_initialCameraPosition.latitude, _initialCameraPosition.longitude),15.0));
 
       });
     });
@@ -91,6 +97,7 @@ class _MWorkMapState extends State<MWorkMap>{
   {
     super.initState();
     getLoc();
+
   }
 
 
@@ -122,18 +129,50 @@ class _MWorkMapState extends State<MWorkMap>{
 
   @override
   Widget build(BuildContext context) {
-    print("Widget build: position : $_initialcameraposition");
+
+    Set<TileOverlay> overlays = <TileOverlay>{
+      if(_tileOverlay!=null) _tileOverlay!,
+    };
+
+    print("Widget build: position : $_initialCameraPosition");
     return GoogleMap(
       onMapCreated: _onMapCreated,
       initialCameraPosition: CameraPosition(
-        target: LatLng(_initialcameraposition.latitude,_initialcameraposition.longitude),
+        target: LatLng(_initialCameraPosition.latitude,_initialCameraPosition.longitude),
         zoom:15,
       ),
       markers: _markers.values.toSet(),
       myLocationEnabled: true,
+      tileOverlays: overlays,
 
     );
 
   }
+
+  void _addTileOverlay()
+  {
+    final TileOverlay tileOverlay = TileOverlay(
+      tileOverlayId: TileOverlayId("Finn Satellite Overlay"),
+      tileProvider: MWorkTileProvider(),
+    );
+    //_tileOverlay = tileOverlay;
+    setState(() {
+      _tileOverlay = tileOverlay;
+    });
+  }
+
+  void _clearTileCache(){
+    if(_tileOverlay != null && _mapController != null){
+      _mapController!.clearTileCache(_tileOverlay!.tileOverlayId);
+    }
+  }
+
+  void _removeTileOverlay()
+  {
+    setState((){
+      _tileOverlay = null;
+    });
+  }
+
 }
 

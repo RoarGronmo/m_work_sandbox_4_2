@@ -11,7 +11,7 @@ class MWork extends StatelessWidget{
     return MaterialApp(
       title: "mWork",
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: const HomePage(title: "mWork Sandbox 4.2")
+      home: HomePage(title: "mWork Sandbox 4.2")
     );
 
   }

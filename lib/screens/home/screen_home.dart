@@ -8,7 +8,7 @@ class HomePage extends StatefulWidget{
 
   final String title;
 
-  const HomePage({Key? key, required this.title}) : super(key: key);
+  HomePage({Key? key, required this.title}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
