@@ -15,6 +15,9 @@ class HomePage extends StatefulWidget{
 }
 
 class _HomePageState extends State<HomePage>{
+
+  final mapKey = GlobalKey();
+
   @override
   void initState(){
     super.initState();
@@ -27,33 +30,33 @@ class _HomePageState extends State<HomePage>{
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      drawer: const MainDrawer(),
+      drawer: MainDrawer(mapKey:mapKey),
       body: OrientationBuilder(
         builder: (context, orientation){
           if(orientation == Orientation.portrait){
-            return _portraitMode();
+            return _portraitMode(mapKey);
           } else {
-            return _landscapeMode();
+            return _landscapeMode(mapKey);
           }
         }),
       );
 
   }
 
-  Widget _portraitMode(){
+  Widget _portraitMode(GlobalKey mapKey){
     return Column(
       children: <Widget>[
-        _expandedMap(),
+        _expandedMap(mapKey),
         _expandedList()
       ],
     );
   }
 
-  Widget _landscapeMode(){
+  Widget _landscapeMode(GlobalKey mapKey){
     return Row(
       children: <Widget>[
         _expandedList(),
-        _expandedMap()
+        _expandedMap(mapKey)
       ],
     );
   }
@@ -69,10 +72,10 @@ class _HomePageState extends State<HomePage>{
     );
   }
 
-  Widget _expandedMap()
+  Widget _expandedMap(mapKey)
   {
     return Expanded(
-      child: MWorkMap()
+      child: MWorkMap(mapKey: mapKey)
     );
   }
 

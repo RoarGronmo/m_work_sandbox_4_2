@@ -7,25 +7,29 @@ import 'package:m_work_sandbox_4_2/screens/map/m_work_tile_provider.dart';
 
 
 class MWorkMap extends StatefulWidget{
-  const MWorkMap({Key? key}) : super(key: key);
+  const MWorkMap({required GlobalKey mapKey}) : super(key: mapKey);
 
   @override
-  _MWorkMapState createState() => _MWorkMapState();
+  MWorkMapState createState() => MWorkMapState();
 
-  addTileOverlay() => createState()._addTileOverlay();
-  removeTileOverlay() => createState()._removeTileOverlay();
-  clearTileCache()=> createState()._clearTileCache();
+  //addTileOverlay() => createState()._addTileOverlay();
+  //removeTileOverlay() => createState()._removeTileOverlay();
+  //clearTileCache()=> createState()._clearTileCache();
 }
 
-class _MWorkMapState extends State<MWorkMap>{
+class MWorkMapState extends State<MWorkMap>{
   final Map<String, Marker> _markers = {};
 
   late LocationData _currentPosition;
   late PermissionStatus _permissionGranted;
   late GoogleMapController _mapController;
-  TileOverlay? _tileOverlay;
+  TileOverlay? _mapTileOverlay;
+  TileOverlay? _bufferedTileOverlay;
   LatLng _initialCameraPosition = LatLng(0,0);
   Location location = Location();
+  bool _isTilt = false;
+
+  late GoogleMap _googleMap;
 
 
 
@@ -81,8 +85,12 @@ class _MWorkMapState extends State<MWorkMap>{
           return;
         }
         _initialCameraPosition = LatLng(_currentPosition.latitude!, _currentPosition.longitude!);
-
         _mapController.animateCamera(CameraUpdate.newLatLngZoom(LatLng(_initialCameraPosition.latitude, _initialCameraPosition.longitude),15.0));
+        _mapController.animateCamera(CameraUpdate.newCameraPosition(
+            CameraPosition(
+              target: LatLng(_initialCameraPosition.latitude, _initialCameraPosition.longitude),
+              tilt: _isTilt?45.0:0.0
+            )));
 
       });
     });
@@ -97,9 +105,14 @@ class _MWorkMapState extends State<MWorkMap>{
   {
     super.initState();
     getLoc();
+    final TileOverlay newMapTileOverlay = TileOverlay(
+      tileOverlayId: const TileOverlayId("MWork Finn Tile Overlay"),
+      tileProvider: MWorkTileProvider(),
+    );
+
+    _bufferedTileOverlay = newMapTileOverlay;
 
   }
-
 
   Future<void> _onMapCreated(GoogleMapController controller) async {
 
@@ -120,22 +133,17 @@ class _MWorkMapState extends State<MWorkMap>{
         );
         _markers[office.name] = marker;
       }
-
     });
-
   }
-
-
 
   @override
   Widget build(BuildContext context) {
 
     Set<TileOverlay> overlays = <TileOverlay>{
-      if(_tileOverlay!=null) _tileOverlay!,
+      if(_mapTileOverlay!=null) _mapTileOverlay!,
     };
 
-    print("Widget build: position : $_initialCameraPosition");
-    return GoogleMap(
+    _googleMap = GoogleMap(
       onMapCreated: _onMapCreated,
       initialCameraPosition: CameraPosition(
         target: LatLng(_initialCameraPosition.latitude,_initialCameraPosition.longitude),
@@ -144,34 +152,46 @@ class _MWorkMapState extends State<MWorkMap>{
       markers: _markers.values.toSet(),
       myLocationEnabled: true,
       tileOverlays: overlays,
-
     );
 
+    print("Widget build: position : $_initialCameraPosition");
+    return _googleMap;
   }
 
-  void _addTileOverlay()
+  void addTileOverlay()
   {
+    /*
     final TileOverlay tileOverlay = TileOverlay(
       tileOverlayId: TileOverlayId("Finn Satellite Overlay"),
       tileProvider: MWorkTileProvider(),
-    );
+    );*/
     //_tileOverlay = tileOverlay;
     setState(() {
-      _tileOverlay = tileOverlay;
+      _mapTileOverlay = _bufferedTileOverlay;
     });
   }
 
-  void _clearTileCache(){
-    if(_tileOverlay != null && _mapController != null){
-      _mapController!.clearTileCache(_tileOverlay!.tileOverlayId);
+  void clearTileCache(){
+    if(_mapTileOverlay != null){
+      _mapController.clearTileCache(_mapTileOverlay!.tileOverlayId);
     }
   }
 
-  void _removeTileOverlay()
+  void removeTileOverlay()
   {
     setState((){
-      _tileOverlay = null;
+      _mapTileOverlay = null;
     });
+  }
+
+  void tiltMap()
+  {
+      if(_isTilt==true){
+        _isTilt = false;
+      }
+      else{
+        _isTilt = true;
+      }
   }
 
 }

@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:m_work_sandbox_4_2/screens/map/screen_map.dart';
 
 class MainDrawer extends StatefulWidget{
-  const MainDrawer({Key? key}) : super(key: key);
 
+  final GlobalKey mapKey;
+
+  const MainDrawer({Key? key, required this.mapKey}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => MainDrawerState();
@@ -44,6 +46,7 @@ class MainDrawerState extends State<MainDrawer>{
           ),
           ListTile(
             title: const Text('Map'),
+            subtitle: const Text('(not working at the moment)'),
             onTap: () => showMap(),
             leading: const Icon(Icons.map)
           ),
@@ -61,7 +64,12 @@ class MainDrawerState extends State<MainDrawer>{
             title: const Text('Remove tile overlay'),
             onTap: () => removeTiles(),
             leading: const Icon(Icons.layers_clear)
-          )
+          ),
+          ListTile(
+              title: const Text('Tilt map'),
+              onTap: () => tiltMap(),
+              leading: const Icon(Icons.threed_rotation),
+          ),
         ],
       )
     );
@@ -75,17 +83,24 @@ class MainDrawerState extends State<MainDrawer>{
 
   void addTileOverlay(){
     print("Add tile overlay clicked");
-    MWorkMap().addTileOverlay();
+    (widget.mapKey.currentState as MWorkMapState).addTileOverlay();
   }
 
   void clearTileCache(){
     print("Clear tile cache clicked");
     //MWorkMap().clearTileCache();
+    (widget.mapKey.currentState as MWorkMapState).clearTileCache();
   }
 
   void removeTiles(){
     print("Remove tiles clicked");
     //MWorkMap().removeTileOverlay();
+    (widget.mapKey.currentState as MWorkMapState).removeTileOverlay();
+  }
+
+  void tiltMap()
+  {
+    (widget.mapKey.currentState as MWorkMapState).tiltMap();
   }
 
 
