@@ -85,6 +85,7 @@ class MWorkMapState extends State<MWorkMap>{
           return;
         }
         _initialCameraPosition = LatLng(_currentPosition.latitude!, _currentPosition.longitude!);
+
         _mapController.animateCamera(CameraUpdate.newLatLngZoom(LatLng(_initialCameraPosition.latitude, _initialCameraPosition.longitude),15.0));
         _mapController.animateCamera(CameraUpdate.newCameraPosition(
             CameraPosition(
