@@ -41,6 +41,7 @@ dependencies:
   location: ^4.3.0
   aad_oauth: ^0.3.0
   jwt_decode: ^0.3.1
+  msal_js: ^2.14.0
 
 dev_dependencies:
   flutter_test:
