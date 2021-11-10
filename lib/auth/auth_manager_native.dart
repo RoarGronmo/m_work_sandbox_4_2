@@ -73,7 +73,7 @@ class AuthManagerNative extends AuthManager {
   Future<void> logout() async {
     print("Logging out...");
     aadOAuth.logout();
-    print("Access token after login: $_accessToken");
+    print("Access token after logout: $_accessToken");
   }
 
 }
