@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import 'auth_manager_interface.dart';
 import 'package:m_work_sandbox_4_2/services/api_service.dart';
 import 'package:msal_js/msal_js.dart';
@@ -59,6 +61,7 @@ class AuthManagerWeb extends AuthManager {
   @override
   Future<String> login() async {
     print("AuthManagerWeb.login(): opening...");
+
     try{
       print("AuthManagerWeb.login(): waiting for publicClientApplication");
       final AuthenticationResult? redirectResult =
@@ -78,6 +81,8 @@ class AuthManagerWeb extends AuthManager {
 
         publicClientApplication.setActiveAccount(redirectResult.account);
 
+        return redirectResult.accessToken;
+
       } else {
         final List<AccountInfo> accounts = publicClientApplication.getAllAccounts();
 
@@ -85,6 +90,7 @@ class AuthManagerWeb extends AuthManager {
           //An account is logged in, set the first one as active
           //Should give warning that more than one
           publicClientApplication.setActiveAccount(accounts.first);
+
         }
       }
 
@@ -92,6 +98,8 @@ class AuthManagerWeb extends AuthManager {
       //Give login error
       print("AuthManagerWeb.login(): ${exception.message}");
     }
+
+
 
     try{
       final response = await publicClientApplication.loginPopup(
