@@ -10,8 +10,10 @@ void main() {
   print("main(): sessionId  = $_sessionId");
 
   if(_sessionId != null){
+    print("main(): starting MWork()");
     runApp(const MWork());
   } else {
+    print("main(): Connects to AuthManager");
     AuthManager.instance?.login().then((value) =>{
       runApp(const MWork())
     }).onError((error, stackTrace) => {

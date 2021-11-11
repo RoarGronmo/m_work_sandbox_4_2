@@ -7,7 +7,7 @@ const String mWorkAuthClientId = 'bbe45ebc-fb38-48d8-8abd-9c5a9d38a6fd';
 const String mWorkAuthScope = 'openid profile offline_access';
 const List<String> mWorkAuthScopeList = ['openid', 'profile', 'offline_access'];
 const String mWorkAuthRedirectUri = 'https://login.live.com/oauth20_desktop.srf';
-const String mWorkAuthAuthorityPrefix = "https://login.microsoft.com/";
+const String mWorkAuthAuthorityPrefix = "https://login.microsoftonline.com/";
 
 //native
 
