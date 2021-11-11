@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:m_work_sandbox_4_2/auth/auth_manager_interface.dart';
 import 'package:m_work_sandbox_4_2/screens/map/screen_map.dart';
+import 'package:m_work_sandbox_4_2/services/m_work_api_service.dart';
 
 class MainDrawer extends StatefulWidget{
 
@@ -72,6 +73,12 @@ class MainDrawerState extends State<MainDrawer>{
               leading: const Icon(Icons.threed_rotation),
           ),
           ListTile(
+            title: const Text('Read texts'),
+            onTap: () => readTexts(),
+            leading: const Icon(Icons.article),
+          ),
+
+          ListTile(
             title: const Text('Log out'),
             onTap: () => logout(),
             leading: const Icon(Icons.logout),
@@ -107,6 +114,16 @@ class MainDrawerState extends State<MainDrawer>{
   void tiltMap()
   {
     (widget.mapKey.currentState as MWorkMapState).tiltMap();
+  }
+
+  void readTexts() async {
+      try{
+        final mWorkOrderTextTypes = await fetchMWorkOrderTextTypes();
+
+        print("readTexts(): mWorkOrderTextTypes = $mWorkOrderTextTypes");
+      }catch(exception){
+        print("readTexts(): error = $exception");
+      }
   }
 
   void logout()

@@ -130,8 +130,35 @@ class AuthManagerWeb extends AuthManager {
   }
 
   @override
-  Future<String?> getAccessToken() {
+  Future<String?> getAccessToken() async {
     // TODO: implement getAccessToken
-    publicClientApplication.
+    if(publicClientApplication.getAllAccounts().isEmpty){
+      print("AuthManagerWeb.getAccessToken(): No accounts available");
+      return null; //no accounts available
+    }
+
+    try{
+      //Try to get a token silently
+      final silentRequest = SilentRequest()..scopes = m_work_config.mWorkAuthWebScope;
+
+      final AuthenticationResult silentResult = await publicClientApplication.acquireTokenSilent(silentRequest);
+      print("AuthManagerWeb.getAccessToken(): accessToken = ${silentResult.accessToken}");
+      return silentResult.accessToken;
+    } on InteractionRequiredAuthException{
+      try{
+        final interactiveRequest = PopupRequest()..scopes = m_work_config.mWorkAuthWebScope;
+
+        final AuthenticationResult interactiveResult =
+            await publicClientApplication.acquireTokenPopup(interactiveRequest);
+
+        return interactiveResult.accessToken;
+      } on AuthException catch (exception){
+        print("AuthManagerWeb.getAccessToken(): interactive exception = $exception");
+        return null;
+      }
+    } on AuthException catch (exception){
+      print("AuthManagerWeb.getAccessToken(): silent exception = $exception");
+      return null;
+    }
   }
 }
