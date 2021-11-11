@@ -128,4 +128,10 @@ class AuthManagerWeb extends AuthManager {
   Future<void> logout() async {
     publicClientApplication.logoutRedirect();
   }
+
+  @override
+  Future<String?> getAccessToken() {
+    // TODO: implement getAccessToken
+    publicClientApplication.
+  }
 }

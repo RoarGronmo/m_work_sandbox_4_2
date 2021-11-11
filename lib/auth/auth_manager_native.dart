@@ -76,4 +76,9 @@ class AuthManagerNative extends AuthManager {
     print("Access token after logout: $_accessToken");
   }
 
+  @override
+  Future<String?> getAccessToken() async {
+    return aadOAuth.getAccessToken();
+  }
+
 }

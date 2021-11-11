@@ -17,5 +17,6 @@ abstract class AuthManager extends ChangeNotifier {
   Future<void> logout();
   bool isLoggedIn();
   String? getSession();
+  Future<String?> getAccessToken();
 
 }
