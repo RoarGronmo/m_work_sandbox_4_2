@@ -11,7 +11,8 @@ class MainDrawer extends StatefulWidget{
   const MainDrawer({Key? key, required this.mapKey}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => MainDrawerState();
+  //State<StatefulWidget> createState() => MainDrawerState();
+  MainDrawerState createState() => MainDrawerState();
 
 }
 
@@ -118,7 +119,7 @@ class MainDrawerState extends State<MainDrawer>{
 
   void readTexts() async {
       try{
-        final mWorkOrderTextTypes = await fetchMWorkOrderTextTypes();
+        final mWorkOrderTextTypes = await readMWorkOrderTextTypes();
 
         print("readTexts(): mWorkOrderTextTypes = $mWorkOrderTextTypes");
       }catch(exception){

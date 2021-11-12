@@ -115,6 +115,8 @@ class AuthManagerWeb extends AuthManager {
 
       print("AuthManagerWeb.login(): popup login successful: ${_accountInfo?.name}");
 
+      publicClientApplication.setActiveAccount(_accountInfo);
+
       return response.accessToken;
 
     } on AuthException catch (exception){

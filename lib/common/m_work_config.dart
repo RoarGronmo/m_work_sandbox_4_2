@@ -22,6 +22,10 @@ const String mWorkAuthWebAuthority = "$mWorkAuthAuthorityPrefix$mWorkAuthTenant"
 const List<String> mWorkAuthWebScope = mWorkAuthScopeList;
 
 
+//api
+const String mWorkApiUrl = 'https://api.norva24.no';
+const String mWorkApiPort = '5011';
+
 
 
 

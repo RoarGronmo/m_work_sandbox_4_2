@@ -4,7 +4,33 @@ import 'dart:io';
 import 'package:m_work_sandbox_4_2/auth/auth_manager_interface.dart';
 import 'package:http/http.dart' as http;
 
-Future<MWorkOrderTextTypes?> fetchMWorkOrderTextTypes() async {
+import 'package:m_work_sandbox_4_2/common/m_work_config.dart' as m_work_config;
+
+
+
+
+Future<http.Response?>? mWorkGetApi(String command) async {
+
+  String? accessToken = await AuthManager.instance?.getAccessToken();
+
+  if(accessToken == null){
+    print("readMWorkApi(): accessToken is null");
+    return null;
+  }
+
+  final response = await http.get(
+      Uri.parse('${m_work_config.mWorkApiUrl}:${m_work_config.mWorkApiPort}/$command'),
+      headers: {
+        HttpHeaders.authorizationHeader: 'Bearer $accessToken'
+      },
+  );
+
+  return response;
+
+}
+
+Future<MWorkOrderTextTypes?> readMWorkOrderTextTypes() async {
+
   String? accessToken = await AuthManager.instance?.getAccessToken();
 
   if(accessToken == null){
@@ -25,9 +51,6 @@ Future<MWorkOrderTextTypes?> fetchMWorkOrderTextTypes() async {
 
   return MWorkOrderTextTypes.fromJson(responseJson);
 }
-
-
-
 
 class MWorkOrderTextTypes{
   final bool? success;
