@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:m_work_sandbox_4_2/auth/auth_manager_interface.dart';
 import 'package:m_work_sandbox_4_2/screens/map/screen_map.dart';
 import 'package:m_work_sandbox_4_2/services/m_work_api_service.dart';
+import 'package:m_work_sandbox_4_2/services/m_work_api_service_test_1.dart';
 
 class MainDrawer extends StatefulWidget{
 
@@ -75,7 +76,7 @@ class MainDrawerState extends State<MainDrawer>{
           ),
           ListTile(
             title: const Text('Read texts'),
-            onTap: () => readTexts(),
+            onTap: () => readTexts2(),
             leading: const Icon(Icons.article),
           ),
 
@@ -115,6 +116,16 @@ class MainDrawerState extends State<MainDrawer>{
   void tiltMap()
   {
     (widget.mapKey.currentState as MWorkMapState).tiltMap();
+  }
+
+  void readTexts2() async {
+
+    try{
+      testReadData();
+    }catch(exception){
+      print("readTexts2(): error: $exception");
+    }
+
   }
 
   void readTexts() async {
