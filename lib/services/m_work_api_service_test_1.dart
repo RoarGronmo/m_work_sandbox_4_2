@@ -1,4 +1,5 @@
 import 'package:chopper/chopper.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:m_work_sandbox_4_2/auth/auth_manager_interface.dart';
 import 'package:m_work_sandbox_4_2/services/generated/mWorkApi.swagger.dart';
@@ -27,21 +28,30 @@ Future<String> getOrderTextTypes() async
 
   if(accessToken == null) return "";
 
-
+  print("acessToken = $accessToken");
 
   ChopperClient? chopperClient = ChopperClient(
     baseUrl: 'https://api.norva24.no:5011',
     converter: $JsonSerializableConverter(),
     interceptors:  [
       HeadersInterceptor(
-        {"Authentication":"Bearer $accessToken"})
-
+        {"Authorization":"Bearer $accessToken"})
     ]
   );
 
-  final value = MWorkApi.create(chopperClient).orderTextTypesGet();
+  final orderTextTypesGetResponse = await MWorkApi.create(chopperClient).orderTextTypesGet();
 
-  print("value = $value");
+  print("response = ${orderTextTypesGetResponse.bodyString}");
+
+  final orderFirmsFrmNoUnitsGetResponse = await MWorkApi.create(chopperClient).orderFirmsFrmNoUnitsGet(frmNo: 2);
+
+  print("response = ${orderFirmsFrmNoUnitsGetResponse.bodyString}");
+
+  final orderFirmsFrmNoOfficesGet = await MWorkApi.create(chopperClient).orderFirmsFrmNoOfficesGet(frmNo: 3);
+
+  print("response = ${orderFirmsFrmNoOfficesGet.bodyString}");
+
+
 
   return "result";
 }

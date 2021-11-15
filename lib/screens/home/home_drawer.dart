@@ -76,10 +76,14 @@ class MainDrawerState extends State<MainDrawer>{
           ),
           ListTile(
             title: const Text('Read texts'),
+            onTap: () => readTexts(),
+            leading: const Icon(Icons.article),
+          ),
+          ListTile(
+            title: const Text('Read texts 2'),
             onTap: () => readTexts2(),
             leading: const Icon(Icons.article),
           ),
-
           ListTile(
             title: const Text('Log out'),
             onTap: () => logout(),
@@ -136,6 +140,10 @@ class MainDrawerState extends State<MainDrawer>{
       }catch(exception){
         print("readTexts(): error = $exception");
       }
+  }
+
+  void retrofitTest() async{
+
   }
 
   void logout()
