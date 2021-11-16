@@ -43,14 +43,18 @@ Future<String> getOrderTextTypes() async
 
   print("response = ${orderTextTypesGetResponse.bodyString}");
 
-  final orderFirmsFrmNoUnitsGetResponse = await MWorkApi.create(chopperClient).orderFirmsFrmNoUnitsGet(frmNo: 2);
+  final orderFirmsFrmNoUnitsGetResponse = await MWorkApi.create(chopperClient).orderFirmsFrmNoUnitsGet(frmNo: 29);
 
   print("response = ${orderFirmsFrmNoUnitsGetResponse.bodyString}");
 
-  final orderFirmsFrmNoOfficesGet = await MWorkApi.create(chopperClient).orderFirmsFrmNoOfficesGet(frmNo: 3);
+  final orderFirmsFrmNoOfficesGet = await MWorkApi.create(chopperClient).orderFirmsFrmNoOfficesGet(frmNo: 29);
 
   print("response = ${orderFirmsFrmNoOfficesGet.bodyString}");
 
+  final  orderFirmsFrmNoTextsGet = await MWorkApi.create(chopperClient).orderFirmsFrmNoTextsGet(frmNo: 29);
+
+  print("response = ${orderFirmsFrmNoTextsGet.bodyString}");
+  print("statusCode = ${orderFirmsFrmNoTextsGet.statusCode}");
 
 
   return "result";
